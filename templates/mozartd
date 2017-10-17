@@ -20,10 +20,6 @@ ARGV="$@"
 ERROR=0
 
 start() {
-    # start rabbitmq-server and elasticsearch
-    sudo service rabbitmq-server start
-    sudo service elasticsearch start
-
     if [ -f ${PID_FILE} ]; then
         PID=`cat ${PID_FILE}`
         PID_DIR=/proc/${PID}
@@ -47,10 +43,6 @@ stop() {
         done
         echo "done."
     fi
-
-    # stop rabbitmq-server and elasticsearch
-    sudo service rabbitmq-server stop
-    sudo service elasticsearch stop
 }
 
 restart() {
@@ -59,26 +51,11 @@ restart() {
 }
 
 clean() {
-  #RabbitMQ queues
-  sudo rm -rf /var/lib/rabbitmq/mnesia/*
-}
-
-clean_es() {
-  echo -n "Waiting for ElasticSearch to start."
-  (echo >/dev/tcp/localhost/9200) &>/dev/null
-  while [ $? -ne 0 ]; do
-    sleep 1
-    echo -n "."
-    (echo >/dev/tcp/localhost/9200) &>/dev/null
-  done
-  echo "done."
-  curl -XDELETE "http://localhost:9200/job_status"
 }
 
 cleanstart() {
     clean
     start
-    clean_es
 }
 
 cleanrestart() {
