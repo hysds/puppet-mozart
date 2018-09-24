@@ -21,6 +21,9 @@ RUN set -ex \
 
 FROM hysds/base:latest
 
+MAINTAINER Gerald Manipon (pymonger) "pymonger@gmail.com"
+LABEL description="HySDS mozart image"
+
 # git url to hysds dev puppet module
 ENV GIT_URL https://github.com/hysds/puppet-mozart/raw/docker/install.sh
 
