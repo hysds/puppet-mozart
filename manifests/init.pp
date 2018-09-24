@@ -157,6 +157,15 @@ class mozart inherits hysds_base {
   }
 
 
+  file { "/home/$user/logstash":
+    ensure => 'link',
+    target => "/home/$user/logstash-1.5.5",
+    owner => $user,
+    group => $group,
+    require => Tarball['logstash-1.5.5.tar.gz'],
+  }
+
+
   #####################################################
   # write rc.local to startup & shutdown mozart
   #####################################################
