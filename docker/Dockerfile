@@ -3,6 +3,9 @@ FROM hysds/dev:latest
 # git url to hysds dev puppet module
 ENV GIT_URL https://github.com/hysds/puppet-mozart/raw/docker/install.sh
 
+# add latest repo version to invalidate cache
+ADD https://api.github.com/repos/hysds/puppet-mozart/git/refs/heads/docker version.json
+
 # provision via puppet
 RUN set -ex \
  && sudo yum update -y \
@@ -26,6 +29,9 @@ LABEL description="HySDS mozart image"
 
 # git url to hysds dev puppet module
 ENV GIT_URL https://github.com/hysds/puppet-mozart/raw/docker/install.sh
+
+# add latest repo version to invalidate cache
+ADD https://api.github.com/repos/hysds/puppet-mozart/git/refs/heads/docker version.json
 
 # provision via puppet
 RUN set -ex \
