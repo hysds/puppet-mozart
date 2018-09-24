@@ -153,6 +153,34 @@ if [ "$?" -ne 0 ]; then
 fi
 
 
+# export latest figaro package
+cd $OPS
+PACKAGE=figaro
+if [ ! -d "$OPS/$PACKAGE" ]; then
+  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+fi
+cd $OPS/$PACKAGE
+pip install -e .
+if [ "$?" -ne 0 ]; then
+  echo "Failed to run 'pip install -e .' for $PACKAGE."
+  exit 1
+fi
+
+
+# export latest sdscli package
+cd $OPS
+PACKAGE=sdscli
+if [ ! -d "$OPS/$PACKAGE" ]; then
+  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+fi
+cd $OPS/$PACKAGE
+pip install -e .
+if [ "$?" -ne 0 ]; then
+  echo "Failed to run 'pip install -e .' for $PACKAGE."
+  exit 1
+fi
+
+
 # export latest grq2 package
 cd $OPS
 PACKAGE=grq2

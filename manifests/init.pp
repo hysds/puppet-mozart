@@ -2,68 +2,12 @@
 # mozart class
 #####################################################
 
-class mozart {
+class mozart inherits hysds_base {
 
   #####################################################
-  # create groups and users
+  # copy user files
   #####################################################
   
-  #notify { $user: }
-  if $user == undef {
-
-    $user = 'ops'
-    $group = 'ops'
-
-    group { $group:
-      ensure     => present,
-    }
-  
-
-    user { $user:
-      ensure     => present,
-      gid        =>  $group,
-      shell      => '/bin/bash',
-      home       => "/home/$user",
-      managehome => true,
-      require    => Group[$group],
-    }
-
-
-    file { "/home/$user":
-      ensure  => directory,
-      owner   => $user,
-      group   => $group,
-      mode    => 0755,
-      require => User[$user],
-    }
-
-
-    inputrc { 'root':
-      home    => '/root',
-    }
-
-
-    inputrc { $user:
-      home    => "/home/$user",
-      require => User[$user],
-    }
-
-
-  }
-
-
-  file { "/home/$user/.git_oauth_token":
-    ensure  => file,
-    content  => template('mozart/git_oauth_token'),
-    owner   => $user,
-    group   => $group,
-    mode    => 0600,
-    require => [
-                User[$user],
-               ],
-  }
-
-
   file { "/home/$user/.bash_profile":
     ensure  => present,
     content => template('mozart/bash_profile'),
@@ -88,7 +32,6 @@ class mozart {
   package {
     'mailx': ensure => present;
     'httpd': ensure => present;
-    'httpd-devel': ensure => present;
     'mod_ssl': ensure => present;
   }
 
@@ -211,35 +154,6 @@ class mozart {
                 User[$user],
                 Cat_split_file["logstash-1.5.5.tar.gz"],
                ]
-  }
-
-
-  file { "/home/$user/logstash":
-    ensure => 'link',
-    target => "/home/$user/logstash-1.5.5",
-    owner => $user,
-    group => $group,
-    require => Tarball['logstash-1.5.5.tar.gz'],
-  }
-
-
-  tarball { "kibana-3.1.2.tar.gz":
-    install_dir => "/var/www/html",
-    owner => 'root',
-    group => 'root',
-    require => [
-                User[$user],
-                Package['httpd'],
-               ],
-  }
-
- 
-  file { "/var/www/html/metrics":
-    ensure => 'link',
-    target => "/var/www/html/kibana-3.1.2",
-    owner => 'root',
-    group => 'root',
-    require => Tarball['kibana-3.1.2.tar.gz'],
   }
 
 
