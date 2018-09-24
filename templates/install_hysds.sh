@@ -171,7 +171,7 @@ fi
 cd $OPS
 PACKAGE=sdscli
 if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+  git clone ${GIT_URL}/sdskit/${PACKAGE}.git
 fi
 cd $OPS/$PACKAGE
 pip install -e .
