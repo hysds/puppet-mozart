@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-# wait for rabbit, redis, and ES
-/wait-for-it.sh -t 30 mozart-rabbit:15672
+# wait for rabbitmq, redis, and ES
+/wait-for-it.sh -t 30 mozart-rabbitmq:15672
 /wait-for-it.sh -t 30 mozart-redis:6379
 /wait-for-it.sh -t 30 mozart-elasticsearch:9200
 
