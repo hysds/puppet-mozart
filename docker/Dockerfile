@@ -44,18 +44,20 @@ RUN set -ex \
  && sudo rm -f /tmp/install.sh \
  && sudo rm -rf /var/cache/yum
 
-# copy ops home and set default supervisord conf
+# copy ops home
 COPY --chown=ops:ops --from=0 /home/ops /home/ops
-COPY --chown=ops:ops docker/supervisord.conf /home/ops/mozart/etc/supervisord.conf
 
-# set and link configs
+# link configs
 RUN set -ex \
- && mkdir -p /home/ops/mozart/etc/conf.d \
  && ln -sf /home/ops/mozart/etc/celeryconfig.py /home/ops/mozart/ops/hysds/celeryconfig.py \
  && ln -sf /home/ops/mozart/etc/settings.cfg /home/ops/mozart/ops/mozart/settings.cfg \
  && ln -sf /home/ops/mozart/etc/settings.cfg /home/ops/mozart/ops/figaro/settings.cfg \
  && ln -sf /home/ops/mozart/etc/server.key /home/ops/mozart/ops/mozart/server.key \
  && ln -sf /home/ops/mozart/etc/server.pem /home/ops/mozart/ops/mozart/server.pem
+
+# set default supervisord conf and copy includes
+COPY --chown=ops:ops docker/supervisord.conf /home/ops/mozart/etc/supervisord.conf
+COPY --chown=ops:ops docker/conf.d /home/ops/mozart/etc/conf.d
 
 # set entrypoint
 COPY docker/wait-for-it.sh /wait-for-it.sh
