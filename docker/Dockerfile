@@ -44,8 +44,9 @@ RUN set -ex \
  && sudo rm -f /tmp/install.sh \
  && sudo rm -rf /var/cache/yum
 
-# copy ops home
+# copy ops home and set default supervisord conf
 COPY --chown=ops:ops --from=0 /home/ops /home/ops
+COPY --chown=ops:ops docker/supervisord.conf /home/ops/mozart/etc/supervisord.conf
 
 # link celeryconfig
 RUN set -ex \
@@ -59,5 +60,5 @@ RUN set -ex \
 COPY docker/wait-for-it.sh /wait-for-it.sh
 COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
-EXPOSE 80 443 5555 8888 8898 9001
+EXPOSE 22 80 443 5555 8888 8898 9001
 CMD ["supervisord"]
