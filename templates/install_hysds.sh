@@ -5,7 +5,7 @@ MOZART_DIR=<%= @mozart_dir %>
 
 # create virtualenv if not found
 if [ ! -e "$MOZART_DIR/bin/activate" ]; then
-  virtualenv --system-site-packages $MOZART_DIR
+  /opt/conda/bin/virtualenv --system-site-packages $MOZART_DIR
   echo "Created virtualenv at $MOZART_DIR."
 fi
 
@@ -21,7 +21,8 @@ pip install -U setuptools
 
 # force install supervisor
 if [ ! -e "$MOZART_DIR/bin/supervisord" ]; then
-  pip install --ignore-installed supervisor
+  #pip install --ignore-installed supervisor
+  pip install --ignore-installed git+https://github.com/Supervisor/supervisor
 fi
 
 
@@ -64,7 +65,7 @@ fi
 cd $OPS
 PACKAGE=prov_es
 if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+  git clone --single-branch -b python3 ${GIT_URL}/hysds/${PACKAGE}.git
 fi
 cd $OPS/$PACKAGE
 pip install -e .
@@ -79,7 +80,7 @@ cd $OPS
 GITHUB_REPO=osaka
 PACKAGE=osaka
 if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${GITHUB_REPO}.git $PACKAGE
+  git clone --single-branch -b python3 ${GIT_URL}/hysds/${PACKAGE}.git
 fi
 cd $OPS/$PACKAGE
 pip install -U pyasn1
@@ -96,7 +97,7 @@ fi
 cd $OPS
 PACKAGE=hysds_commons
 if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+  git clone --single-branch -b python3 ${GIT_URL}/hysds/${PACKAGE}.git
 fi
 cd $OPS/$PACKAGE
 pip install -e .
@@ -110,7 +111,7 @@ fi
 cd $OPS
 PACKAGE=hysds
 if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+  git clone --single-branch -b python3 ${GIT_URL}/hysds/${PACKAGE}.git
 fi
 pip install -U  greenlet
 pip install -U  pytz
@@ -129,7 +130,7 @@ fi
 cd $OPS
 PACKAGE=sciflo
 if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+  git clone --single-branch -b python3 ${GIT_URL}/hysds/${PACKAGE}.git
 fi
 cd $OPS/$PACKAGE
 pip install -e .
@@ -143,7 +144,35 @@ fi
 cd $OPS
 PACKAGE=mozart
 if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+  git clone --single-branch -b python3 ${GIT_URL}/hysds/${PACKAGE}.git
+fi
+cd $OPS/$PACKAGE
+pip install -e .
+if [ "$?" -ne 0 ]; then
+  echo "Failed to run 'pip install -e .' for $PACKAGE."
+  exit 1
+fi
+
+
+# export latest figaro package
+cd $OPS
+PACKAGE=figaro
+if [ ! -d "$OPS/$PACKAGE" ]; then
+  git clone --single-branch -b python3 ${GIT_URL}/hysds/${PACKAGE}.git
+fi
+cd $OPS/$PACKAGE
+pip install -e .
+if [ "$?" -ne 0 ]; then
+  echo "Failed to run 'pip install -e .' for $PACKAGE."
+  exit 1
+fi
+
+
+# export latest sdscli package
+cd $OPS
+PACKAGE=sdscli
+if [ ! -d "$OPS/$PACKAGE" ]; then
+  git clone --single-branch -b python3 ${GIT_URL}/sdskit/${PACKAGE}.git
 fi
 cd $OPS/$PACKAGE
 pip install -e .
@@ -157,7 +186,7 @@ fi
 cd $OPS
 PACKAGE=grq2
 if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+  git clone --single-branch -b python3 ${GIT_URL}/hysds/${PACKAGE}.git
 fi
 
 
@@ -165,7 +194,7 @@ fi
 cd $OPS
 PACKAGE=tosca
 if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+  git clone --single-branch -b python3 ${GIT_URL}/hysds/${PACKAGE}.git
 fi
 
 
@@ -173,5 +202,5 @@ fi
 cd $OPS
 PACKAGE=spyddder-man
 if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+  git clone --single-branch -b python3 ${GIT_URL}/hysds/${PACKAGE}.git
 fi
