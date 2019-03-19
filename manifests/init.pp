@@ -14,6 +14,20 @@ class mozart inherits scientific_python {
 
 
   #####################################################
+  # copy user files
+  #####################################################
+
+  file { "/home/$user/.bash_profile":
+    ensure  => present,
+    content => template('mozart/bash_profile'),
+    owner   => $user,
+    group   => $group,
+    mode    => 0644,
+    require => File_line["user_source_anaconda"],
+  }
+
+
+  #####################################################
   # mozart directory
   #####################################################
 
