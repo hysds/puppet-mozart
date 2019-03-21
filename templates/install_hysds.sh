@@ -209,3 +209,35 @@ PACKAGE=container-builder
 if [ ! -d "$OPS/$PACKAGE" ]; then
   git clone ${GIT_URL}/hysds/${PACKAGE}.git
 fi
+
+
+# export latest hysds-cloud-functions package
+cd $OPS
+PACKAGE=hysds-cloud-functions
+if [ ! -d "$OPS/$PACKAGE" ]; then
+  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+fi
+
+
+# export latest hysds-dockerfiles package
+cd $OPS
+PACKAGE=hysds-dockerfiles
+if [ ! -d "$OPS/$PACKAGE" ]; then
+  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+fi
+
+
+# export latest lightweight-jobs package
+cd $OPS
+PACKAGE=lightweight-jobs
+if [ ! -d "$OPS/$PACKAGE" ]; then
+  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+fi
+
+
+# export latest s3-bucket-listing package
+cd $OPS
+PACKAGE=s3-bucket-listing
+if [ ! -d "$OPS/$PACKAGE" ]; then
+  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+fi
