@@ -201,3 +201,11 @@ PACKAGE=spyddder-man
 if [ ! -d "$OPS/$PACKAGE" ]; then
   git clone ${GIT_URL}/hysds/${PACKAGE}.git
 fi
+
+
+# export latest container-builder package
+cd $OPS
+PACKAGE=container-builder
+if [ ! -d "$OPS/$PACKAGE" ]; then
+  git clone ${GIT_URL}/hysds/${PACKAGE}.git
+fi
