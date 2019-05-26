@@ -1,48 +1,24 @@
 #!/bin/bash
+BASE_PATH=$(dirname "${BASH_SOURCE}")
+BASE_PATH=$(cd "${BASE_PATH}"; pwd)
 
-MOZART_DIR=<%= @mozart_dir %>
+
+# usage
+usage() {
+  echo "usage: $0 <release tag>" >&2
+}
 
 
-# create virtualenv if not found
-if [ ! -e "$MOZART_DIR/bin/activate" ]; then
-  /opt/conda/bin/virtualenv --system-site-packages $MOZART_DIR
-  echo "Created virtualenv at $MOZART_DIR."
+# check usage
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
 fi
+release=$1
 
 
-# source virtualenv
-source $MOZART_DIR/bin/activate
-
-
-# install latest pip and setuptools
-pip install -U pip
-pip install -U setuptools
-
-
-# force install supervisor
-if [ ! -e "$MOZART_DIR/bin/supervisord" ]; then
-  #pip install --ignore-installed supervisor
-  pip install --ignore-installed git+https://github.com/Supervisor/supervisor
-fi
-
-
-# create etc directory
-if [ ! -d "$MOZART_DIR/etc" ]; then
-  mkdir $MOZART_DIR/etc
-fi
-
-
-# create log directory
-if [ ! -d "$MOZART_DIR/log" ]; then
-  mkdir $MOZART_DIR/log
-fi
-
-
-# create run directory
-if [ ! -d "$MOZART_DIR/run" ]; then
-  mkdir $MOZART_DIR/run
-fi
-
+# print out commands and exit on any errors
+set -ex
 
 # set oauth token
 OAUTH_CFG="$HOME/.git_oauth_token"
@@ -54,190 +30,22 @@ else
 fi
 
 
-# create ops directory
-OPS="$MOZART_DIR/ops"
-if [ ! -d "$OPS" ]; then
-  mkdir $OPS
-fi
-
-
-# export latest prov_es package
-cd $OPS
-PACKAGE=prov_es
-if [ ! -d "$OPS/$PACKAGE" ]; then
+# clone hysds-framework
+cd $HOME
+PACKAGE=hysds-framework
+if [ ! -d "$HOME/$PACKAGE" ]; then
   git clone ${GIT_URL}/hysds/${PACKAGE}.git
 fi
-cd $OPS/$PACKAGE
-pip install -e .
-if [ "$?" -ne 0 ]; then
-  echo "Failed to run 'pip install -e .' for $PACKAGE."
-  exit 1
+cd $HOME/$PACKAGE
+if [ "$release" = "develop" ]; then
+  ./install.sh -d mozart
+else
+  ./install.sh -r $release mozart
 fi
 
 
-# export latest osaka package
-cd $OPS
-GITHUB_REPO=osaka
-PACKAGE=osaka
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-cd $OPS/$PACKAGE
-pip install -U pyasn1
-pip install -U pyasn1-modules
-pip install -U python-dateutil
-pip install -e .
-if [ "$?" -ne 0 ]; then
-  echo "Failed to run 'pip install -e .' for $PACKAGE."
-  exit 1
-fi
+MOZART_DIR=<%= @mozart_dir %>
 
 
-# export latest hysds_commons package
-cd $OPS
-PACKAGE=hysds_commons
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-cd $OPS/$PACKAGE
-pip install -e .
-if [ "$?" -ne 0 ]; then
-  echo "Failed to run 'pip install -e .' for $PACKAGE."
-  exit 1
-fi
-
-
-# export latest hysds package
-cd $OPS
-PACKAGE=hysds
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-cd $OPS/$PACKAGE/third_party/celery-v4.2.1
-pip install -e .
-cd $OPS/$PACKAGE
-pip install -e .
-if [ "$?" -ne 0 ]; then
-  echo "Failed to run 'pip install -e .' for $PACKAGE."
-  exit 1
-fi
-
-
-# export latest sciflo package
-cd $OPS
-PACKAGE=sciflo
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-cd $OPS/$PACKAGE
-pip install -e .
-if [ "$?" -ne 0 ]; then
-  echo "Failed to run 'pip install -e .' for $PACKAGE."
-  exit 1
-fi
-
-
-# export latest mozart package
-cd $OPS
-PACKAGE=mozart
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-cd $OPS/$PACKAGE
-pip install -e .
-if [ "$?" -ne 0 ]; then
-  echo "Failed to run 'pip install -e .' for $PACKAGE."
-  exit 1
-fi
-
-
-# export latest figaro package
-cd $OPS
-PACKAGE=figaro
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-cd $OPS/$PACKAGE
-pip install -e .
-if [ "$?" -ne 0 ]; then
-  echo "Failed to run 'pip install -e .' for $PACKAGE."
-  exit 1
-fi
-
-
-# export latest sdscli package
-cd $OPS
-PACKAGE=sdscli
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/sdskit/${PACKAGE}.git
-fi
-cd $OPS/$PACKAGE
-pip install -e .
-if [ "$?" -ne 0 ]; then
-  echo "Failed to run 'pip install -e .' for $PACKAGE."
-  exit 1
-fi
-
-
-# export latest grq2 package
-cd $OPS
-PACKAGE=grq2
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-
-
-# export latest tosca package
-cd $OPS
-PACKAGE=tosca
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-
-
-# export latest spyddder-man package
-cd $OPS
-PACKAGE=spyddder-man
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-
-
-# export latest container-builder package
-cd $OPS
-PACKAGE=container-builder
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-
-
-# export latest hysds-cloud-functions package
-cd $OPS
-PACKAGE=hysds-cloud-functions
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-
-
-# export latest hysds-dockerfiles package
-cd $OPS
-PACKAGE=hysds-dockerfiles
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-
-
-# export latest lightweight-jobs package
-cd $OPS
-PACKAGE=lightweight-jobs
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
-
-
-# export latest s3-bucket-listing package
-cd $OPS
-PACKAGE=s3-bucket-listing
-if [ ! -d "$OPS/$PACKAGE" ]; then
-  git clone ${GIT_URL}/hysds/${PACKAGE}.git
-fi
+# source virtualenv
+source $MOZART_DIR/bin/activate
