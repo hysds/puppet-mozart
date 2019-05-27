@@ -49,3 +49,7 @@ MOZART_DIR=<%= @mozart_dir %>
 
 # source virtualenv
 source $MOZART_DIR/bin/activate
+
+
+# cleanup pkgs
+rm -rf $MOZART_DIR/pkgs/*
