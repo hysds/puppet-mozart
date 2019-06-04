@@ -35,9 +35,6 @@ if [ -e `readlink /home/ops/mozart/ops/mozart/settings.cfg` ]; then
   /home/ops/mozart/ops/mozart/db_create.py
 fi
 
-# create user rules index
-/home/ops/mozart/ops/mozart/scripts/create_user_rules_index.py || :
-
 # ensure db for figaro exists
 if [ ! -d "/home/ops/mozart/ops/figaro/data" ]; then
   mkdir -p /home/ops/mozart/ops/figaro/data
@@ -45,6 +42,12 @@ fi
 if [ -e `readlink /home/ops/mozart/ops/figaro/settings.cfg` ]; then
   /home/ops/mozart/ops/figaro/db_create.py
 fi
+
+# create user rules index
+/home/ops/mozart/ops/mozart/scripts/create_user_rules_index.py || :
+
+# install ES templates for HySDS package indexes
+/home/ops/mozart/ops/hysds_commons/scripts/install_es_template.sh mozart || :
 
 if [[ "$#" -eq 1  && "$@" == "supervisord" ]]; then
   set -- supervisord -n
