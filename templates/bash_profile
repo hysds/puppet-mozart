@@ -7,10 +7,10 @@ fi
 
 # misc
 umask 0022
-export LD_LIBRARY_PATH=<%= @conda_path %>/lib:/usr/lib:/usr/lib64:/usr/local/lib:$LD_LIBRARY_PATH
 export GIT_SSL_NO_VERIFY=true
-export PATH=<%= @conda_path %>/bin:$PATH
 
-# source mozart virtualenv
+# source mozart virtualenv if exists
 export MOZART_DIR=$HOME/mozart
-source $MOZART_DIR/bin/activate
+if [ -e "$MOZART_DIR/bin/activate" ]; then
+  source $MOZART_DIR/bin/activate
+fi
