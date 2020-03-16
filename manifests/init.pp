@@ -51,10 +51,10 @@ class mozart inherits hysds_base {
   # install oracle java and set default
   #####################################################
 
-  $jdk_rpm_file = "jdk-8u60-linux-x64.rpm"
+  $jdk_rpm_file = "jdk-8u241-linux-x64.rpm"
   $jdk_rpm_path = "/etc/puppet/modules/mozart/files/$jdk_rpm_file"
-  $jdk_pkg_name = "jdk1.8.0_60"
-  $java_bin_path = "/usr/java/$jdk_pkg_name/jre/bin/java"
+  $jdk_pkg_name = "jdk1.8.x86_64"
+  $java_bin_path = "/usr/java/jdk1.8.0_241-amd64/jre/bin/java"
 
 
   cat_split_file { "$jdk_rpm_file":
@@ -139,30 +139,30 @@ class mozart inherits hysds_base {
   }
 
 
-  cat_split_file { "logstash-1.5.5.tar.gz":
+  cat_split_file { "logstash-7.1.1.tar.gz":
     install_dir => "/etc/puppet/modules/mozart/files",
     owner       =>  $user,
     group       =>  $group,
   }
 
 
-  tarball { "logstash-1.5.5.tar.gz":
+  tarball { "logstash-7.1.1.tar.gz":
     install_dir => "/home/$user",
     owner => $user,
     group => $group,
     require => [
                 User[$user],
-                Cat_split_file["logstash-1.5.5.tar.gz"],
+                Cat_split_file["logstash-7.1.1.tar.gz"],
                ]
   }
 
 
   file { "/home/$user/logstash":
     ensure => 'link',
-    target => "/home/$user/logstash-1.5.5",
+    target => "/home/$user/logstash-7.1.1",
     owner => $user,
     group => $group,
-    require => Tarball['logstash-1.5.5.tar.gz'],
+    require => Tarball['logstash-7.1.1.tar.gz'],
   }
 
 
