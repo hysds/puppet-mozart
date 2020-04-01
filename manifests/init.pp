@@ -33,6 +33,7 @@ class mozart inherits hysds_base {
     'mailx': ensure => present;
     'httpd': ensure => present;
     'mod_ssl': ensure => present;
+    'nodejs': ensure => present;
   }
 
 

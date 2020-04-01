@@ -28,11 +28,18 @@ class erlang {
     gpgcheck     => 0,
   }
 
-
   yumrepo { 'rabbitmq_erlang-source':
     baseurl      => 'https://packagecloud.io/rabbitmq/erlang/el/7/SRPMS',
     enabled      => 1,
     gpgcheck     => 0,
+  }
+}
+
+class nodesource {
+  yumrepo { "nodesource":
+    baseurl => 'https://rpm.nodesource.com/pub_12.x/el/7/$basearch',
+    enabled => 1,
+    gpgcheck => 0
   }
 }
 
@@ -50,6 +57,7 @@ node 'default' {
     'yum':         stage => 'pre';
     'docker':      stage => 'pre';
     'erlang':      stage => 'pre';
+    'nodesource':  stage => 'pre';
   }
 
   # stage order
