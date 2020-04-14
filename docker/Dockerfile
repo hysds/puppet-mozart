@@ -55,7 +55,6 @@ COPY --chown=ops:ops --from=0 /home/ops /home/ops
 RUN set -ex \
  && ln -sf /home/ops/mozart/etc/celeryconfig.py /home/ops/mozart/ops/hysds/celeryconfig.py \
  && ln -sf /home/ops/mozart/etc/settings.cfg /home/ops/mozart/ops/mozart/settings.cfg \
- && ln -sf /home/ops/mozart/etc/settings.cfg /home/ops/mozart/ops/figaro/settings.cfg \
  && ln -sf /home/ops/mozart/etc/server.key /home/ops/mozart/ops/mozart/server.key \
  && ln -sf /home/ops/mozart/etc/server.pem /home/ops/mozart/ops/mozart/server.pem
 
