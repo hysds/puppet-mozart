@@ -1,6 +1,6 @@
 if versioncmp($::puppetversion,'3.6.1') >= 0 {
 
-  $allow_virtual_packages = hiera('allow_virtual_packages',false)
+  $allow_virtual_packages = lookup('allow_virtual_packages', undef, undef, false)
 
   Package {
     allow_virtual => $allow_virtual_packages,
@@ -15,7 +15,7 @@ class yum {
 
 class docker {
   yumrepo { "docker-ce-stable":
-    baseurl => "https://download.docker.com/linux/centos/7/$architecture/stable",
+    baseurl => "https://download.docker.com/linux/centos/8/$architecture/stable",
     enabled => 1,
     gpgcheck => 0
   }
@@ -23,13 +23,13 @@ class docker {
 
 class erlang {
   yumrepo { 'rabbitmq_erlang':
-    baseurl      => 'https://packagecloud.io/rabbitmq/erlang/el/7/$basearch',
+    baseurl      => 'https://packagecloud.io/rabbitmq/erlang/el/8/$basearch',
     enabled      => 1,
     gpgcheck     => 0,
   }
 
   yumrepo { 'rabbitmq_erlang-source':
-    baseurl      => 'https://packagecloud.io/rabbitmq/erlang/el/7/SRPMS',
+    baseurl      => 'https://packagecloud.io/rabbitmq/erlang/el/8/SRPMS',
     enabled      => 1,
     gpgcheck     => 0,
   }
@@ -37,7 +37,7 @@ class erlang {
 
 class nodesource {
   yumrepo { "nodesource":
-    baseurl => 'https://rpm.nodesource.com/pub_12.x/el/7/$basearch',
+    baseurl => 'https://rpm.nodesource.com/pub_12.x/el/8/$basearch',
     enabled => 1,
     gpgcheck => 0
   }

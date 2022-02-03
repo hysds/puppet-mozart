@@ -6,7 +6,7 @@ define mozart::tarball($pkg_tgz=$title, $install_dir, $owner, $group) {
       ensure  => directory,
       owner   => $user,
       group   => $group,
-      mode    => 0755,
+      mode    => "0755",
     }
   }
 

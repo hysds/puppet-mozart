@@ -13,7 +13,7 @@ class mozart inherits hysds_base {
     content => template('mozart/bash_profile'),
     owner   => $user,
     group   => $group,
-    mode    => 0644,
+    mode    => "0644",
     require => User[$user],
   }
 
@@ -93,7 +93,7 @@ class mozart inherits hysds_base {
     content => template('mozart/install_hysds.sh'),
     owner   => $user,
     group   => $group,
-    mode    => 0755,
+    mode    => "0755",
     require => User[$user],
   }
 
@@ -105,7 +105,7 @@ class mozart inherits hysds_base {
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    mode    => 0755,
+    mode    => "0755",
     require => User[$user],
   }
 
@@ -114,7 +114,7 @@ class mozart inherits hysds_base {
     ensure  => present,
     owner   => $user,
     group   => $group,
-    mode    => 0755,
+    mode    => "0755",
     content => template('mozart/mozartd'),
     require => File["$mozart_dir/bin"],
   }
@@ -124,7 +124,7 @@ class mozart inherits hysds_base {
     ensure  => present,
     owner   => $user,
     group   => $group,
-    mode    => 0755,
+    mode    => "0755",
     content => template('mozart/start_mozart'),
     require => File["$mozart_dir/bin"],
   }
@@ -134,7 +134,7 @@ class mozart inherits hysds_base {
     ensure  => present,
     owner   => $user,
     group   => $group,
-    mode    => 0755,
+    mode    => "0755",
     content => template('mozart/stop_mozart'),
     require => File["$mozart_dir/bin"],
   }
@@ -174,7 +174,7 @@ class mozart inherits hysds_base {
   file { '/etc/rc.d/rc.local':
     ensure  => file,
     content  => template('mozart/rc.local'),
-    mode    => 0755,
+    mode    => "0755",
   }
 
 
@@ -185,7 +185,7 @@ class mozart inherits hysds_base {
   file { "/etc/httpd/conf.d/autoindex.conf":
     ensure  => present,
     content => template('mozart/autoindex.conf'),
-    mode    => 0644,
+    mode    => "0644",
     require => Package['httpd'],
   }
 
@@ -193,7 +193,7 @@ class mozart inherits hysds_base {
   file { "/etc/httpd/conf.d/welcome.conf":
     ensure  => present,
     content => template('mozart/welcome.conf'),
-    mode    => 0644,
+    mode    => "0644",
     require => Package['httpd'],
   }
 
@@ -201,7 +201,7 @@ class mozart inherits hysds_base {
   file { "/etc/httpd/conf.d/ssl.conf":
     ensure  => present,
     content => template('mozart/ssl.conf'),
-    mode    => 0644,
+    mode    => "0644",
     require => Package['httpd'],
   }
 
@@ -209,7 +209,7 @@ class mozart inherits hysds_base {
   file { '/var/www/html/index.html':
     ensure  => file,
     content => template('mozart/index.html'),
-    mode    => 0644,
+    mode    => "0644",
     require => Package['httpd'],
   }
 

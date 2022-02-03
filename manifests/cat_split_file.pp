@@ -4,6 +4,6 @@ define mozart::cat_split_file($split_file=$title, $install_dir, $owner, $group) 
   exec { "cat $split_file.*":
     creates => "$install_dir/$split_file",
     path    => ["/bin", "/usr/bin"],
-    command => "cat /etc/puppet/modules/mozart/files/$split_file.* > $install_dir/$split_file",
+    command => "cat /etc/puppetlabs/code/modules/mozart/files/$split_file.* > $install_dir/$split_file",
   }
 }
