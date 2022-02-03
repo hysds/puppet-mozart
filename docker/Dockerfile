@@ -18,34 +18,18 @@ ARG HYSDS_RELEASE=develop
 ADD https://api.github.com/repos/${ORG}/puppet-mozart/git/refs/heads/${BRANCH} version.json
 
 # provision via puppet
-#RUN --mount=type=secret,id=git_oauth_token sudo cp /run/secrets/git_oauth_token $HOME/.git_oauth_token \
-# && sudo chown ops:ops $HOME/.git_oauth_token \
-# && set -ex \
-# && sudo dnf update -y \
-# && sudo curl -skL ${GIT_URL} > /tmp/install.sh \
-# && sudo chmod 755 /tmp/install.sh \
-# && sudo /tmp/install.sh ${ORG} ${BRANCH} ${BASE_BRANCH} \
-# && sudo rm -rf /etc/puppetlabs/code/modules/* /mnt/swapfile \
-# && sudo dnf clean all \
-# && sudo rm -f /tmp/install.sh \
-# && sudo rm -rf /var/cache/dnf \
-# && cd $HOME \
-# && ./install_hysds.sh ${FRAMEWORK_BRANCH} ${HYSDS_RELEASE} \
-# && rm -rf $HOME/mozart/ops/*/.git* \
-# && rm -rf $HOME/.cache \
-# && rm -rf $HOME/.git_oauth_token
 RUN --mount=type=secret,id=git_oauth_token sudo cp /run/secrets/git_oauth_token $HOME/.git_oauth_token \
  && sudo chown ops:ops $HOME/.git_oauth_token \
  && set -ex \
  && sudo dnf update -y \
  && sudo curl -skL ${GIT_URL} > /tmp/install.sh \
  && sudo chmod 755 /tmp/install.sh \
- && sudo /tmp/install.sh ${ORG} ${BRANCH} ${BASE_BRANCH}
-RUN sudo rm -rf /etc/puppetlabs/code/modules/* /mnt/swapfile
-RUN sudo dnf clean all
-RUN sudo rm -f /tmp/install.sh
-RUN sudo rm -rf /var/cache/dnf
-RUN cd $HOME \
+ && sudo /tmp/install.sh ${ORG} ${BRANCH} ${BASE_BRANCH} \
+ && sudo rm -rf /etc/puppetlabs/code/modules/* /mnt/swapfile \
+ && sudo dnf clean all \
+ && sudo rm -f /tmp/install.sh \
+ && sudo rm -rf /var/cache/dnf \
+ && cd $HOME \
  && ./install_hysds.sh ${FRAMEWORK_BRANCH} ${HYSDS_RELEASE} \
  && rm -rf $HOME/mozart/ops/*/.git* \
  && rm -rf $HOME/.cache \
@@ -66,26 +50,17 @@ ARG BASE_BRANCH
 ENV GIT_URL https://github.com/${ORG}/puppet-mozart/raw/${BRANCH}/install.sh
 
 # provision via puppet
-#RUN set -ex \
-# && sudo dnf update -y \
-# && sudo curl -skL ${GIT_URL} > /tmp/install.sh \
-# && sudo chmod 755 /tmp/install.sh \
-# && sudo /tmp/install.sh ${ORG} ${BRANCH} ${BASE_BRANCH} \
-# && sudo rm -rf /etc/puppetlabs/code/modules/* /mnt/swapfile \
-# && sudo dnf clean all \
-# && sudo rm -f /tmp/install.sh \
-# && sudo rm -rf /var/cache/dnf
 RUN --mount=type=secret,id=git_oauth_token sudo cp /run/secrets/git_oauth_token $HOME/.git_oauth_token \
  && sudo chown ops:ops $HOME/.git_oauth_token \
  && set -ex \
  && sudo dnf update -y \
  && sudo curl -skL ${GIT_URL} > /tmp/install.sh \
  && sudo chmod 755 /tmp/install.sh \
- && sudo /tmp/install.sh ${ORG} ${BRANCH} ${BASE_BRANCH}
-RUN sudo rm -rf /etc/puppetlabs/code/modules/* /mnt/swapfile
-RUN sudo dnf clean all
-RUN sudo rm -f /tmp/install.sh
-RUN sudo rm -rf /var/cache/dnf
+ && sudo /tmp/install.sh ${ORG} ${BRANCH} ${BASE_BRANCH} \
+ && sudo rm -rf /etc/puppetlabs/code/modules/* /mnt/swapfile \
+ && sudo dnf clean all \
+ && sudo rm -f /tmp/install.sh \
+ && sudo rm -rf /var/cache/dnf
 
 # copy ops home
 COPY --chown=ops:ops --from=0 /home/ops /home/ops
