@@ -113,3 +113,4 @@ if [[ ("$PUPPET_EXIT_CODE" -ne 0 ) && ("$PUPPET_EXIT_CODE" -ne 2) ]]; then
   echo "Puppet failed to run cleanly."
   exit 1
 fi
+exit 0
