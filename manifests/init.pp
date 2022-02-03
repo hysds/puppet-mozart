@@ -58,7 +58,7 @@ class mozart inherits hysds_base {
   $java_bin_path = "/usr/java/jdk1.8.0_241-amd64/jre/bin/java"
 
 
-  cat_split_file { "$jdk_rpm_file":
+  mozart::cat_split_file { "$jdk_rpm_file":
     install_dir => "/etc/puppet/modules/mozart/files",
     owner       =>  $user,
     group       =>  $group,
@@ -74,7 +74,7 @@ class mozart inherits hysds_base {
   }
 
 
-  update_alternatives { 'java':
+  mozart::update_alternatives { 'java':
     path     => $java_bin_path,
     require  => [
                  Package[$jdk_pkg_name],
@@ -140,14 +140,14 @@ class mozart inherits hysds_base {
   }
 
 
-  cat_split_file { "logstash-7.9.3.tar.gz":
+  mozart::cat_split_file { "logstash-7.9.3.tar.gz":
     install_dir => "/etc/puppet/modules/mozart/files",
     owner       =>  $user,
     group       =>  $group,
   }
 
 
-  tarball { "logstash-7.9.3.tar.gz":
+  mozart::tarball { "logstash-7.9.3.tar.gz":
     install_dir => "/home/$user",
     owner => $user,
     group => $group,
