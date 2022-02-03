@@ -36,7 +36,7 @@ RUN --mount=type=secret,id=git_oauth_token sudo cp /run/secrets/git_oauth_token 
  && rm -rf $HOME/.git_oauth_token
 
 
-FROM hysds/base:latest
+FROM hysds/base:${TAG}
 
 MAINTAINER Gerald Manipon (pymonger) "pymonger@gmail.com"
 LABEL description="HySDS mozart image"
