@@ -70,7 +70,7 @@ class mozart inherits hysds_base {
     ensure   => present,
     source   => $jdk_rpm_path,
     notify   => Exec['ldconfig'],
-    require     => Cat_split_file["$jdk_rpm_file"],
+    require     => Mozart::Cat_split_file["$jdk_rpm_file"],
   }
 
 
@@ -153,7 +153,7 @@ class mozart inherits hysds_base {
     group => $group,
     require => [
                 User[$user],
-                Cat_split_file["logstash-7.9.3.tar.gz"],
+                Mozart::Cat_split_file["logstash-7.9.3.tar.gz"],
                ]
   }
 
@@ -163,7 +163,7 @@ class mozart inherits hysds_base {
     target => "/home/$user/logstash-7.9.3",
     owner => $user,
     group => $group,
-    require => Tarball['logstash-7.9.3.tar.gz'],
+    require => Mozart::Tarball['logstash-7.9.3.tar.gz'],
   }
 
 
