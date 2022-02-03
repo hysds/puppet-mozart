@@ -53,13 +53,13 @@ class mozart inherits hysds_base {
   #####################################################
 
   $jdk_rpm_file = "jdk-8u241-linux-x64.rpm"
-  $jdk_rpm_path = "/etc/puppet/modules/mozart/files/$jdk_rpm_file"
+  $jdk_rpm_path = "/etc/puppetlabs/code/modules/mozart/files/$jdk_rpm_file"
   $jdk_pkg_name = "jdk1.8.x86_64"
   $java_bin_path = "/usr/java/jdk1.8.0_241-amd64/jre/bin/java"
 
 
   mozart::cat_split_file { "$jdk_rpm_file":
-    install_dir => "/etc/puppet/modules/mozart/files",
+    install_dir => "/etc/puppetlabs/code/modules/mozart/files",
     owner       =>  $user,
     group       =>  $group,
   }
@@ -141,7 +141,7 @@ class mozart inherits hysds_base {
 
 
   mozart::cat_split_file { "logstash-7.9.3.tar.gz":
-    install_dir => "/etc/puppet/modules/mozart/files",
+    install_dir => "/etc/puppetlabs/code/modules/mozart/files",
     owner       =>  $user,
     group       =>  $group,
   }
