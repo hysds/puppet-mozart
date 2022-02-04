@@ -13,7 +13,7 @@ class mozart inherits hysds_base {
     content => template('mozart/bash_profile'),
     owner   => $user,
     group   => $group,
-    mode    => 0644,
+    mode    => "0644",
     require => User[$user],
   }
 
@@ -53,13 +53,13 @@ class mozart inherits hysds_base {
   #####################################################
 
   $jdk_rpm_file = "jdk-8u241-linux-x64.rpm"
-  $jdk_rpm_path = "/etc/puppet/modules/mozart/files/$jdk_rpm_file"
+  $jdk_rpm_path = "/etc/puppetlabs/code/modules/mozart/files/$jdk_rpm_file"
   $jdk_pkg_name = "jdk1.8.x86_64"
   $java_bin_path = "/usr/java/jdk1.8.0_241-amd64/jre/bin/java"
 
 
-  cat_split_file { "$jdk_rpm_file":
-    install_dir => "/etc/puppet/modules/mozart/files",
+  mozart::cat_split_file { "$jdk_rpm_file":
+    install_dir => "/etc/puppetlabs/code/modules/mozart/files",
     owner       =>  $user,
     group       =>  $group,
   }
@@ -70,11 +70,11 @@ class mozart inherits hysds_base {
     ensure   => present,
     source   => $jdk_rpm_path,
     notify   => Exec['ldconfig'],
-    require     => Cat_split_file["$jdk_rpm_file"],
+    require     => Mozart::Cat_split_file["$jdk_rpm_file"],
   }
 
 
-  update_alternatives { 'java':
+  mozart::update_alternatives { 'java':
     path     => $java_bin_path,
     require  => [
                  Package[$jdk_pkg_name],
@@ -93,7 +93,7 @@ class mozart inherits hysds_base {
     content => template('mozart/install_hysds.sh'),
     owner   => $user,
     group   => $group,
-    mode    => 0755,
+    mode    => "0755",
     require => User[$user],
   }
 
@@ -105,7 +105,7 @@ class mozart inherits hysds_base {
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    mode    => 0755,
+    mode    => "0755",
     require => User[$user],
   }
 
@@ -114,7 +114,7 @@ class mozart inherits hysds_base {
     ensure  => present,
     owner   => $user,
     group   => $group,
-    mode    => 0755,
+    mode    => "0755",
     content => template('mozart/mozartd'),
     require => File["$mozart_dir/bin"],
   }
@@ -124,7 +124,7 @@ class mozart inherits hysds_base {
     ensure  => present,
     owner   => $user,
     group   => $group,
-    mode    => 0755,
+    mode    => "0755",
     content => template('mozart/start_mozart'),
     require => File["$mozart_dir/bin"],
   }
@@ -134,26 +134,26 @@ class mozart inherits hysds_base {
     ensure  => present,
     owner   => $user,
     group   => $group,
-    mode    => 0755,
+    mode    => "0755",
     content => template('mozart/stop_mozart'),
     require => File["$mozart_dir/bin"],
   }
 
 
-  cat_split_file { "logstash-7.9.3.tar.gz":
-    install_dir => "/etc/puppet/modules/mozart/files",
+  mozart::cat_split_file { "logstash-7.9.3.tar.gz":
+    install_dir => "/etc/puppetlabs/code/modules/mozart/files",
     owner       =>  $user,
     group       =>  $group,
   }
 
 
-  tarball { "logstash-7.9.3.tar.gz":
+  mozart::tarball { "logstash-7.9.3.tar.gz":
     install_dir => "/home/$user",
     owner => $user,
     group => $group,
     require => [
                 User[$user],
-                Cat_split_file["logstash-7.9.3.tar.gz"],
+                Mozart::Cat_split_file["logstash-7.9.3.tar.gz"],
                ]
   }
 
@@ -163,7 +163,7 @@ class mozart inherits hysds_base {
     target => "/home/$user/logstash-7.9.3",
     owner => $user,
     group => $group,
-    require => Tarball['logstash-7.9.3.tar.gz'],
+    require => Mozart::Tarball['logstash-7.9.3.tar.gz'],
   }
 
 
@@ -174,7 +174,7 @@ class mozart inherits hysds_base {
   file { '/etc/rc.d/rc.local':
     ensure  => file,
     content  => template('mozart/rc.local'),
-    mode    => 0755,
+    mode    => "0755",
   }
 
 
@@ -185,7 +185,7 @@ class mozart inherits hysds_base {
   file { "/etc/httpd/conf.d/autoindex.conf":
     ensure  => present,
     content => template('mozart/autoindex.conf'),
-    mode    => 0644,
+    mode    => "0644",
     require => Package['httpd'],
   }
 
@@ -193,7 +193,7 @@ class mozart inherits hysds_base {
   file { "/etc/httpd/conf.d/welcome.conf":
     ensure  => present,
     content => template('mozart/welcome.conf'),
-    mode    => 0644,
+    mode    => "0644",
     require => Package['httpd'],
   }
 
@@ -201,7 +201,7 @@ class mozart inherits hysds_base {
   file { "/etc/httpd/conf.d/ssl.conf":
     ensure  => present,
     content => template('mozart/ssl.conf'),
-    mode    => 0644,
+    mode    => "0644",
     require => Package['httpd'],
   }
 
@@ -209,7 +209,7 @@ class mozart inherits hysds_base {
   file { '/var/www/html/index.html':
     ensure  => file,
     content => template('mozart/index.html'),
-    mode    => 0644,
+    mode    => "0644",
     require => Package['httpd'],
   }
 
