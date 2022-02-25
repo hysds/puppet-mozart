@@ -2,6 +2,12 @@
 ARG TAG=latest
 FROM hysds/dev:${TAG}
 
+# get org and branch
+ARG ORG
+ARG BRANCH
+ARG FRAMEWORK_BRANCH
+ARG BASE_BRANCH
+
 # git url to hysds dev puppet module
 ENV GIT_URL https://github.com/${ORG}/puppet-mozart/raw/${BRANCH}/install.sh
 
