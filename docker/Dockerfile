@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.0-experimental
-ARG TAG=HC-522
+ARG TAG=HC-522-update
 FROM hysds/dev:${TAG}
 
 # get org and branch
@@ -19,7 +19,7 @@ ADD https://api.github.com/repos/${ORG}/puppet-mozart/git/refs/heads/${BRANCH} v
 
 # provision via puppet
 RUN --mount=type=secret,id=git_oauth_token sudo cp /run/secrets/git_oauth_token $HOME/.git_oauth_token \
- && sudo chown ops:ops $HOME/.git_oauth_token \
+ && sudo chown root:root $HOME/.git_oauth_token \
  && set -ex \
  && sudo dnf update -y \
  && sudo curl -skL ${GIT_URL} > /tmp/install.sh \
@@ -60,19 +60,19 @@ RUN set -ex \
  && sudo rm -f /tmp/install.sh \
  && sudo rm -rf /var/cache/dnf
 
-# copy ops home
-COPY --chown=ops:ops --from=0 /home/ops /home/ops
+# copy root
+COPY --chown=root:root --from=0 /root /root
 
 # link configs
 RUN set -ex \
- && ln -sf /home/ops/mozart/etc/celeryconfig.py /home/ops/mozart/ops/hysds/celeryconfig.py \
- && ln -sf /home/ops/mozart/etc/settings.cfg /home/ops/mozart/ops/mozart/settings.cfg \
- && ln -sf /home/ops/mozart/etc/server.key /home/ops/mozart/ops/mozart/server.key \
- && ln -sf /home/ops/mozart/etc/server.pem /home/ops/mozart/ops/mozart/server.pem
+ && ln -sf /root/mozart/etc/celeryconfig.py /root/mozart/ops/hysds/celeryconfig.py \
+ && ln -sf /root/mozart/etc/settings.cfg /root/mozart/ops/mozart/settings.cfg \
+ && ln -sf /root/mozart/etc/server.key /root/mozart/ops/mozart/server.key \
+ && ln -sf /root/mozart/etc/server.pem /root/mozart/ops/mozart/server.pem
 
 # set default supervisord conf and copy includes
-COPY --chown=ops:ops docker/supervisord.conf /home/ops/mozart/etc/supervisord.conf
-COPY --chown=ops:ops docker/conf.d /home/ops/mozart/etc/conf.d
+COPY --chown=root:root docker/supervisord.conf /root/mozart/etc/supervisord.conf
+COPY --chown=root:root docker/conf.d /root/mozart/etc/conf.d
 
 # set entrypoint
 COPY docker/wait-for-it.sh /wait-for-it.sh

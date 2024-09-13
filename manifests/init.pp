@@ -8,7 +8,7 @@ class mozart inherits hysds_base {
   # copy user files
   #####################################################
   
-  file { "/home/$user/.bash_profile":
+  file { "/$user/.bash_profile":
     ensure  => present,
     content => template('mozart/bash_profile'),
     owner   => $user,
@@ -22,7 +22,7 @@ class mozart inherits hysds_base {
   # mozart directory
   #####################################################
 
-  $mozart_dir = "/home/$user/mozart"
+  $mozart_dir = "/$user/mozart"
 
 
   #####################################################
@@ -88,7 +88,7 @@ class mozart inherits hysds_base {
   # files in ops home
   #####################################################
 
-  file { "/home/$user/install_hysds.sh":
+  file { "/$user/install_hysds.sh":
     ensure  => present,
     content => template('mozart/install_hysds.sh'),
     owner   => $user,
@@ -148,7 +148,7 @@ class mozart inherits hysds_base {
 
 
   mozart::tarball { "logstash-7.9.3.tar.gz":
-    install_dir => "/home/$user",
+    install_dir => "/$user",
     owner => $user,
     group => $group,
     require => [
@@ -158,9 +158,9 @@ class mozart inherits hysds_base {
   }
 
 
-  file { "/home/$user/logstash":
+  file { "/$user/logstash":
     ensure => 'link',
-    target => "/home/$user/logstash-7.9.3",
+    target => "/$user/logstash-7.9.3",
     owner => $user,
     group => $group,
     require => Mozart::Tarball['logstash-7.9.3.tar.gz'],
