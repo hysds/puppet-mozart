@@ -50,12 +50,27 @@ class mozart inherits hysds_base {
   
   #####################################################
   # install oracle java and set default
+  # Architecture-specific JDK installation
   #####################################################
 
-  $jdk_rpm_file = "jdk-8u241-linux-x64.rpm"
+  # Determine architecture-specific JDK files
+  $arch = $::architecture
+  
+  # Map architecture to JDK file names
+  # x86_64 uses x64, aarch64 uses aarch64
+  if $arch == 'x86_64' {
+    $jdk_rpm_file = "jdk-8u241-linux-x64.rpm"
+    $jdk_pkg_name = "jdk1.8.x86_64"
+    $java_bin_path = "/usr/java/jdk1.8.0_241-amd64/jre/bin/java"
+  } elsif $arch == 'aarch64' {
+    $jdk_rpm_file = "jdk-8u241-linux-aarch64.rpm"
+    $jdk_pkg_name = "jdk1.8.aarch64"
+    $java_bin_path = "/usr/java/jdk1.8.0_241-aarch64/jre/bin/java"
+  } else {
+    fail("Unsupported architecture: ${arch}")
+  }
+
   $jdk_rpm_path = "/etc/puppetlabs/code/modules/mozart/files/$jdk_rpm_file"
-  $jdk_pkg_name = "jdk1.8.x86_64"
-  $java_bin_path = "/usr/java/jdk1.8.0_241-amd64/jre/bin/java"
 
 
   mozart::cat_split_file { "$jdk_rpm_file":
